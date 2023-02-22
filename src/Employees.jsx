@@ -26,7 +26,7 @@ const Employees = ({employees,selectedTeam,handleTeamSelectionChange,handleEmplo
                 <div class="col-8">
                     <div class="card-collection">
             {employees.map((employee)=>(
-          <div id={employee.id} className= {(employee.teamName===selectedTeam ? 'card m-2 standout':'card m-2')} style={{cursor:"pointer"}}  onClick={handleEmployeeCardClick}>
+          <div key={employee.id} id={employee.id} className= {(employee.teamName===selectedTeam ? 'card m-2 standout':'card m-2')} style={{cursor:"pointer"}}  onClick={handleEmployeeCardClick}>
                 {/*in normal html we dont use curly brackets for style 
                 but in react one is for jsx and other for javascript object notation*/}
 

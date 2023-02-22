@@ -1,16 +1,19 @@
  
 import './App.css';
 import Header from './Header';
-import Content from './Content';
+import Error from './Error';
 import Footer from './Footer';
 import Employees from './Employees';
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import {  BrowserRouter as Router,Routes,Route  } from 'react-router-dom';
+import GroupTeamMembers from './GroupTeamMembers';
+import Nav from './Nav';
 
 function App() {
 
-  const [selectedTeam,setTeam]=useState("TeamA");
+  const [selectedTeam,setTeam]=useState(JSON.parse(localStorage.getItem('selectedTeam')) ||"TeamA");
 
-  const [employees,setEmployee]= useState([
+  const [employees,setEmployee]= useState(JSON.parse(localStorage.getItem('employeeList')) ||[
   {
       id:1,
       fullName:"Pawan Laksahan",
@@ -97,6 +100,16 @@ function App() {
   },
 
   ]);
+       useEffect(()=>{
+          localStorage.setItem('employeeList', JSON.stringify(employees));
+       },[employees])
+
+       useEffect(()=>{
+          localStorage.setItem('selectedTeam',JSON.stringify(selectedTeam));
+       },[selectedTeam])
+
+
+
 function handleTeamSelectionChange (event){
   
   setTeam(event.target.value)
@@ -110,17 +123,37 @@ function handleEmployeeCardClick(event){
 };
 
   return (
-     <div>
+    <Router>
+         <Nav/>
       <Header selectedTeam={selectedTeam}
                employeeCount={employees.filter((employee)=>employee.teamName===selectedTeam).length}
                />
-      <Employees employees={employees}
+            <Routes>
+                <Route path="/" 
+                element= {<Employees employees={employees}
                 handleEmployeeCardClick={handleEmployeeCardClick}
                 handleTeamSelectionChange={handleTeamSelectionChange}
                 selectedTeam={selectedTeam}
-                />
-      <Footer/>
-     </div>
+                />}
+                >
+                </Route>
+
+                <Route path="/GroupTeamMembers" 
+                       element={<><GroupTeamMembers/>  </>}
+                        >
+                </Route>
+
+                <Route path="*" 
+                       element= {<Error/>}
+                        >
+                </Route>
+            
+            </Routes>
+    
+            <Footer/>
+      
+    </Router>
+    
   );
 }
 
