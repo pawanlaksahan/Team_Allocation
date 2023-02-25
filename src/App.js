@@ -139,7 +139,8 @@ function handleEmployeeCardClick(event){
                 </Route>
 
                 <Route path="/GroupTeamMembers" 
-                       element={<><GroupTeamMembers/>  </>}
+                       element={<><GroupTeamMembers employees={employees} selectedTeam={selectedTeam}
+                                                     setTeam={setTeam} />  </>}
                         >
                 </Route>
 
